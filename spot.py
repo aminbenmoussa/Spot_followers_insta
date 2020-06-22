@@ -3,8 +3,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time , getpass , os
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
-from datetime import datetime
-
 username='vwin.py'
 
 password=getpass.getpass(' password >>>> ')
@@ -85,7 +83,15 @@ def get_followers():
         inner.append(i.get_attribute('innerHTML'))
     return inner	
 
-
+def compair(a):
+    c=[]
+    for i in a :
+        if not i.endswith(' >>>>>UNFOLLOWED YOU'):
+            c.append(i)
+    for i in c:
+        if i not in my_followers:
+            return False
+    return True
 
 
 scroll()
@@ -98,13 +104,16 @@ file=open("followers.txt",'r')
 old_version_followers=file.readlines()
 
 file.close()
-print(len(old_version_followers),' OLD ONES')
-print(len(my_followers))
+
 for i in old_version_followers:
     old_version_followers[old_version_followers.index(i)]=i[0:-1]
-if old_version_followers==my_followers:
+
+disi=compair(old_version_followers)
+    
+if disi:
     print('NOTHING HAS CHANGED')
 else:
+    print('Hello THERE IM RUNNING !!')
     for i in my_followers:
         if i not in old_version_followers and get_it_in(i) not in old_version_followers:
             print(i + ' is Following you')
@@ -126,3 +135,6 @@ file=open('followers.txt','w')
 for i in old_version_followers:
     file.write(i)
 file.close()
+driver.close()
+#It's over just right here
+
