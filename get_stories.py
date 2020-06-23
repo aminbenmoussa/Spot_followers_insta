@@ -33,7 +33,8 @@ def scroll():
 
 
 def xpath(xp):
-    while True:
+    time.sleep(2)
+    for i in range(5):
         try:
             xpathel = driver.find_element_by_xpath(xp)
         except NoSuchElementException:
@@ -48,6 +49,7 @@ def css(c):
         except NoSuchElementException:
             continue
         return xpathel
+    return False
 
 
 user = input('User To Spy >>>>>  ')
@@ -62,21 +64,27 @@ if not os.path.isdir(user_dir):
 
 stories = css(
     '.jsx-1407646540.container .jsx-1407646540 .jsx-3375929380.download a')
+if stories:
+    print('THERE\'S ',len(stories),' STORIES AVAILABLE ')
+    answer=input('IF YOU WANT TO CONTINUE AND DOWNLOAD THEM HIT ENTER // IF NOT HIT ctrl+C\n			')
 
-for i in stories:
-    i.click()
-    time.sleep(3)
+    for i in stories:
+        i.click()
+        time.sleep(3)
 
-time.sleep(20)
+    time.sleep(20)
 
 
-for i in range(len(stories)):
-    list_of_files = glob.glob('/Users/amin/Downloads/*')
-    latest_file = max(list_of_files, key=os.path.getctime)
-    shutil.move(latest_file, user_dir + '/' + os.path.basename(latest_file))
+    for i in range(len(stories)):
+        list_of_files = glob.glob('/Users/amin/Downloads/*')
+        latest_file = max(list_of_files, key=os.path.getctime)
+        shutil.move(latest_file, user_dir + '/' + os.path.basename(latest_file))
 
-driver.close()
+    driver.close()
 
-print('Done..............................\n')
+    print('Done..............................\n')
 
-print('Got ', len(stories), ' Stories added')
+    print('Got ', len(stories), ' Stories added')
+else:
+    driver.close()
+    print('-------------------NO STORIES TO SHOW------------------') 
